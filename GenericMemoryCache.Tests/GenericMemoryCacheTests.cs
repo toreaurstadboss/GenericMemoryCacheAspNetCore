@@ -73,10 +73,6 @@ namespace GenericMemoryCache.Tests
             existingCars.Count.Should().Be(10);
         }
 
-
-
-
-
         public class Car
         {
             public Car()

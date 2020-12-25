@@ -18,8 +18,16 @@ namespace SomeAcme.SomeUtilNamespace
         public static IEnumerable GetKeys(this IMemoryCache memoryCache) =>
             ((IDictionary)GetEntriesCollection((MemoryCache)memoryCache)).Keys;
 
+        public static IEnumerable GetValues(this IMemoryCache memoryCache) =>
+            ((IDictionary)GetEntriesCollection((MemoryCache)memoryCache)).Values;
+
         public static IEnumerable<T> GetKeys<T>(this IMemoryCache memoryCache) =>
             GetKeys(memoryCache).OfType<T>();
+
+        public static IEnumerable<T> GetValues<T>(this IMemoryCache memoryCache) =>
+            GetValues(memoryCache).OfType<T>();
+
     }
+
 
 }

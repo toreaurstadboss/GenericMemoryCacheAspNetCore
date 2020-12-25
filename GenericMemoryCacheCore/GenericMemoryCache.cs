@@ -13,7 +13,7 @@ namespace SomeAcme.SomeUtilNamespace
     /// </summary>
     /// <typeparam name="TCacheItemData">Payload to store in the memory cache</typeparam>
      /// multiple paralell importing sessions</remarks>
-    public class GenericMemoryCache<TCacheItemData> where TCacheItemData : class
+    public class GenericMemoryCache<TCacheItemData> : IGenericMemoryCache<TCacheItemData> 
     {
         private readonly string _prefixKey;
         private readonly int _defaultExpirationInSeconds;
@@ -71,11 +71,11 @@ namespace SomeAcme.SomeUtilNamespace
             }
         }
 
-        public virtual List<T> GetValues<T>()
+        public virtual List<T> GetValues<T>() 
         {
             lock (_locker)
             {
-                List<T> values = Cache.GetKeys<T>().ToList();
+                var values = Cache.GetValues<ICacheEntry>().Where(c => c.Value is T).Select(c => (T)c.Value).ToList();
                 return values;
             }
         }
@@ -100,13 +100,13 @@ namespace SomeAcme.SomeUtilNamespace
                         return cachedItem;
                     }
                 }
-                return null;
+                return default(TCacheItemData);
 
             }
             catch (Exception err)
             {
                 Debug.WriteLine(err);
-                return null;
+                return default(TCacheItemData);
             }
         }
 
